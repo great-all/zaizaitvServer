@@ -19,5 +19,6 @@ return [
         'lang' => [
             'class' => \common\compenents\Lang::className(),
         ],
+        'params' => \common\helpers\CommonHelper::loadConfig('params'),
     ],
 ];
