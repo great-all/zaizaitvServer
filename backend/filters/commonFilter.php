@@ -7,17 +7,22 @@
  */
 
 namespace backend\filters;
-
-
-use yii\base\ActionFilter;
+use backend\services\users\TokenService;
+use common\constants\CommonConstant;
 
 class commonFilter extends \yii\base\ActionFilter
 {
-     public function beforeAction($action) {
-         var_dump($action->controller->module->id);
-     }
+    public function beforeAction($action)
+    {
+        $_token = \yii::$app->request->post_get(CommonConstant::TOKEN_NAME);
 
-    public function afterAction($action,$result) {
-        var_dump($result);exit;
+        //ÅÐ¶ÏtokenÊÇ·ñºÏ·¨
+        $user_id = TokenService::getService()->getIdByToken($_token);
+
+        if(is_numeric($user_id) && $user_id > 0)
+            $_POST[CommonConstant::REQUEST_PARAM]['user_id'] = $user_id;
+        else
+            $_POST[CommonConstant::REQUEST_PARAM]['user_id'] = null;
+        return true;
     }
 }

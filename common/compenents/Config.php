@@ -50,6 +50,15 @@ class Config extends \yii\base\Object
     }
 
     /**
+     * 获取配置文件路径
+     * @return array
+     */
+    public function getConfigPaths()
+    {
+        return $this->_config_paths;
+    }
+
+    /**
      * Load Config File
      *
      * @param	string	$file			Configuration file name

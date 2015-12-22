@@ -6,6 +6,7 @@
  * Time: 14:36
  */
 namespace backend\models;
-class BackendModel extends \common\models\CommonModel{
+class BackendModel extends \common\models\CommonModel
+{
 
 }

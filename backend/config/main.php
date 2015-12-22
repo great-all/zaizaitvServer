@@ -22,6 +22,11 @@ return [
             ],
         ],
 
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
+
         'request' => [
             'class' => 'common\compenents\Request',
         ],
@@ -34,4 +39,5 @@ return [
             'ConfigPaths' => ['@backend'],
         ],
     ],
+    'params' => \common\helpers\CommonHelper::loadConfig('params'),
 ];

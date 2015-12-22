@@ -19,12 +19,9 @@ class UserInfoService extends BackendService
     public function userCenter($user_id)
     {
         if( ! is_numeric($user_id)) return ErrorConstant::USER_ID_ERROR;
-        $user = UserModel::findOne($user_id);
-        if($user === null) return ErrorConstant::USER_NOT_EXISTS;
-
-        $_userInfo = $user->toArray(['name,icon_url,nick_name,gender,birthday,mobile']);
-
-        return $_userInfo;
+        $user = UserModel::find()->select('name,icon_url,nick_name,gender,birthday,mobile')->asArray()->one();
+        if( empty($user)) return ErrorConstant::USER_NOT_EXISTS;
+        return $user;
     }
 
     /**

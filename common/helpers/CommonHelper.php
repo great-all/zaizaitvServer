@@ -12,12 +12,14 @@ class CommonHelper {
 
     /**
      * @param $file
+     * @param array $config_path
      * @return array
      * @throws InvalidConfigException
      */
-    public static function loadConfig($file)
+    public static function loadConfig($file,$config_path = [])
     {
         static $_config_paths = ['@common', '@backend'];
+        if(!empty($config_path)) $_config_paths = $config_path;
         $_config = [];
 
         $file = ($file === '') ? 'main' : str_replace('.php', '', $file);
@@ -67,5 +69,16 @@ class CommonHelper {
         }
 
         return $_str;
+    }
+
+    /**
+     * 手机号格式验证
+     *
+     * @param string $mobile
+     * @return bool
+     */
+    public static function isMobile($mobile)
+    {
+        return preg_match('/^1[3|4|5|8][0-9]\d{4,8}$/',$mobile) ? true : false;
     }
 }

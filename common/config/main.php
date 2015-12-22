@@ -1,14 +1,12 @@
 <?php
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'modules' => [
+        'debug' => 'yii\debug\Module',
+    ],
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
         ],
 
         'config' => [
@@ -19,6 +17,9 @@ return [
         'lang' => [
             'class' => \common\compenents\Lang::className(),
         ],
-        'params' => \common\helpers\CommonHelper::loadConfig('params'),
+        'queue' => [
+            'class' => \yii\queue\RedisQueue::className(),
+        ],
     ],
+    //'params' => \common\helpers\CommonHelper::loadConfig('params'),
 ];

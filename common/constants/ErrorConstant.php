@@ -4,6 +4,8 @@ namespace common\constants;
 class ErrorConstant
 {
     const SUCCESS = 200;//成功状态吗
+    const UNKNOWN_ERROR = -1;//未知错误
+    const PARAM_ERROR = - 2;//参数错误
 
     //user module
     const USER_BASE = -100;
@@ -15,13 +17,14 @@ class ErrorConstant
     const USER_IS_LOCKED    = self::USER_BASE - 3;//用户被锁
 
     //注册
-    const REGISTER_PARAM_ERROE = self::USER_BASE - 4;//注册参数错误
+    const REGISTER_PARAM_ERROR = self::USER_BASE - 4;//注册参数错误
     const USER_IS_EXISTS       = self::USER_BASE - 5;//注册时用户已经存在
     const REGISTER_NAME_SENSITIVE = self::USER_BASE - 6;//注册时用户名中包含敏感词
     const REGISTER_NICK_SENSITIVE = self::USER_BASE - 7;//注册时昵称中包含敏感词
     const NICK_NAME_IS_EXISTS   =  self::USER_BASE - 8;//注册时昵称已经存在
     const USER_MOBILE_IS_EXISTS  = self::USER_BASE - 9;//注册时手机号已经存在
     const REGISTER_FAIL          = self::USER_BASE - 10;//注册失败
+    const MOBILE_FORMAT_ERROR    = self::USER_BASE - 11;//手机号格式错误
 
     //找回密码
     const MOBILE_NOT_REGISTER    = self::USER_BASE - 11;//手机号未注册
@@ -53,4 +56,20 @@ class ErrorConstant
     //invitation code
     const  INVITATION_CODE_BASE = -600;
     const CREATE_INVITATION_CODE_FAILED = self::INVITATION_CODE_BASE - 1;//验证码创建失败
+
+    //friend module
+    const FRIEND_BASE = -700;
+    const FRIEND_IN_HAND = self::FRIEND_BASE - 1; //好友正在处理中
+    const IS_FRIEND   = self::FRIEND_BASE - 2;//已经是好友关系了
+    const ADD_FRIEND_FAILED = self::FRIEND_BASE - 3;//添加好友失败
+    const NOT_INVITATION    = self::FRIEND_BASE - 4;//没有好友请求
+    const AGREE_FRIEND_FAILED = self::FRIEND_BASE - 5;//同意好友请求失败
+    const DISAGREE_FRIEND_FAILED = self::FRIEND_BASE - 6;//同意好友请求失败
+    const FRIEND_NOT_EXISTS   = self::FRIEND_BASE - 7;//好友不存在
+    const RELEASE_FRIEND_FAILED  = self::FRIEND_BASE - 8;//解除好友关系失败
+
+    //credit
+    const CREDIT_BASE = -800;
+    const ADD_CREDIT_FAILED = self::CREDIT_BASE - 1;//添加积分失败
+    const UPDATE_CREDIT_FAILED = self::CREDIT_BASE - 2;//跟新积分
 }

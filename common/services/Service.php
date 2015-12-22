@@ -9,14 +9,19 @@ namespace common\services;
 class Service extends \yii\base\Model{
 
     /**
+     * 保存实例化过的service
+     * @var array
+     */
+    protected static $_services = [];
+
+    /**
      * @return mixed
      * @throws \yii\base\InvalidConfigException
      */
     public static function getService(){
-        static $_services = [];
         $class_name = static::className();
-        if( ! isset($_services[$class_name]) || ! $_services[$class_name] instanceof Service)
-            $_services[$class_name] = \yii::createObject($class_name);
-        return $_services[$class_name];
+        if( ! isset(static::$_services[$class_name]) || ! static::$_services[$class_name] instanceof Service)
+            static::$_services[$class_name] = \yii::createObject($class_name);
+        return static::$_services[$class_name];
     }
 }

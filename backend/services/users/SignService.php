@@ -16,8 +16,10 @@ class SignService extends BackendService
 
     public function sign($user_id)
     {
+        if( ! is_numeric($user_id))
+            return ErrorConstant::PARAM_ERROR;
         //检查用户当天是否已经签到
-        $_sign = SignModel::findOne(['create_time' => ['$gte'=>\common\helpers\DateHelper::startDate(),'$lte' => \common\helpers\DateHelper::endDate()],]);
+        $_sign = SignModel::findOne(['user_id' => $user_id,'create_time' => ['$gte'=>\common\helpers\DateHelper::startDate(),'$lte' => \common\helpers\DateHelper::endDate()],]);
         if($_sign !== null)
             return ErrorConstant::USER_IS_SIGNED;
 

@@ -8,7 +8,7 @@
 namespace common\services;
 
 use yii\base\InvalidConfigException;
-use common\constans\ErrorConstant;
+use common\constants\ErrorConstant;
 
 class VerifyCodeService extends Service
 {
@@ -66,7 +66,7 @@ class VerifyCodeService extends Service
      */
     private function _checkMobile($mobile)
     {
-        return \common\helpers\MobileHelper::isMobile($mobile) ? true : ErrorConstant::MOBILE_NOT_VALIDITY;
+        return \common\helpers\CommonHelper::isMobile($mobile) ? true : ErrorConstant::MOBILE_NOT_VALIDITY;
     }
 
     /**

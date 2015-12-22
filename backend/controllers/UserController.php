@@ -3,11 +3,12 @@
  * @category 北京阿克米有限公司
  */
 namespace backend\controllers;
-use backend\models\redis\TokenModel;
 use backend\services\users\InvitationCodeService;
 use backend\services\users\UserService;
 use backend\services\users\UserInfoService;
+use backend\services\users\SignService;
 use common\helpers\JsonHelper;
+use \yii\helpers\ArrayHelper;
 
 /**
  * Class UserController
@@ -17,19 +18,19 @@ use common\helpers\JsonHelper;
  */
 class UserController extends BackendController
 {
-
     /**
      * @return array
      *
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => \backend\filters\TokenFilter::className(),
-                'only' => ['sign', 'changePassword','userCenter','account'],
-            ],
-        ];
+//        return ArrayHelper::merge(parent::behaviors(),[
+//            [
+//                'class' => \backend\filters\TokenFilter::className(),
+//                'only' => ['sign', 'changePassword','userCenter','account'],
+//            ],
+//        ]);
+        return [];
     }
 
     /**
@@ -48,11 +49,10 @@ class UserController extends BackendController
     public function actionLogin()
     {
         $param = $this->parseParam();
-        $user_name = $param['user_name'];
-        $password  = $param['password'];
-        $client_type = $param['client_type'];
-        $user_service = UserService::getService();
-        $_return = $user_service->login($user_name, $password, $client_type);
+        $user_name = ArrayHelper::getValue($param,'user_name');
+        $password  = ArrayHelper::getValue($param,'password');
+        $client_type = ArrayHelper::getValue($param,'client_type');
+        $_return = UserService::getService()->login($user_name, $password, $client_type);
         if(is_string($_return))
             return JsonHelper::returnSuccess(['token' => $_return]);
 
@@ -66,10 +66,10 @@ class UserController extends BackendController
     public function actionCheckName()
     {
         $param = $this->parseParam();
-        $user_name = $param['user_name'];
+        $user_name = ArrayHelper::getValue($param,'user_name');
         $_return = UserService::getService()->checkName($user_name);
         if($_return === true)
-            return returnSuccess();
+            return JsonHelper::returnSuccess();
 
         return JsonHelper::returnError($_return);
     }
@@ -81,10 +81,10 @@ class UserController extends BackendController
     public function actionCheckNick()
     {
         $param = $this->parseParam();
-        $nick_name = $param['nick_name'];
+        $nick_name = ArrayHelper::getValue($param,'nick_name');
         $_return = UserService::getService()->checkNick($nick_name);
         if($_return === true)
-            return returnSuccess();
+            return JsonHelper::returnSuccess();
 
         return JsonHelper::returnError($_return);
     }
@@ -96,10 +96,10 @@ class UserController extends BackendController
     public function actionCheckMobile()
     {
         $param = $this->parseParam();
-        $mobile = $param['mobile'];
+        $mobile = ArrayHelper::getValue($param,'mobile');
         $_return = UserService::getService()->checkMobile($mobile);
         if($_return === true)
-            return returnSuccess();
+            return JsonHelper::returnSuccess();
 
         return JsonHelper::returnError($_return);
     }
@@ -111,22 +111,21 @@ class UserController extends BackendController
     public function actionRegister()
     {
         $param = $this->parseParam();
-        $user_name = $param['user_name'];
-        $password = $param['password'];
-        $nick_name = $param['nick_name'];
-        $mobile = $param['mobile'];
+        $user_name = ArrayHelper::getValue($param,'user_name');
+        $password = ArrayHelper::getValue($param,'password');
+        $nick_name = ArrayHelper::getValue($param,'nick_name');
+        $mobile = ArrayHelper::getValue($param,'mobile');
         unset($param['user_name'],$param['password'],$param['nick_name'],$param['mobile']);
         $_return = UserService::getService()->register($user_name,$password,$nick_name,$mobile,$param);
         if($_return === true)
             return JsonHelper::returnSuccess();
 
         return JsonHelper::returnError($_return);
-
-
     }
 
     /**
      * 第三方登陆
+     * @todo 研究合适可行性方案
      */
     public function actionNewLogin()
     {
@@ -140,8 +139,8 @@ class UserController extends BackendController
     public function actionSign()
     {
         $param = $this->parseParam();
-        $user_id = $param['user_id'];
-        $_return = UserService::getService()->sign($user_id);
+        $user_id = ArrayHelper::getValue($param,'user_id');
+        $_return = SignService::getService()->sign($user_id);
         if($_return === true)
             return JsonHelper::returnSuccess();
 
@@ -155,9 +154,9 @@ class UserController extends BackendController
     public function actionForgetPassword()
     {
         $param = $this->parseParam();
-        $mobile = $param['mobile'];
-        $password = $param['password'];
-        $code     = $param['code'];
+        $mobile = ArrayHelper::getValue($param,'mobile');
+        $password = ArrayHelper::getValue($param,'password');
+        $code     = ArrayHelper::getValue($param,'code');
         $_return = UserService::getService()->forgetPassword($mobile,$password,$code);
         if($_return === true)
             return JsonHelper::returnSuccess();
@@ -171,10 +170,10 @@ class UserController extends BackendController
      */
     public function actionChangePassword()
     {
-        $param = $this->parseParam();
-        $user_id = $param['user_id'];
-        $password = $param['password'];
-        $old_password     = $param['oldPassword'];
+        $param            = $this->parseParam();
+        $user_id          = ArrayHelper::getValue($param,'user_id');
+        $password         = ArrayHelper::getValue($param,'password');
+        $old_password     = ArrayHelper::getValue($param,'oldPassword');
         $_return = UserService::getService()->changePassword($user_id,$password,$old_password);
         if($_return === true)
             return JsonHelper::returnSuccess();
@@ -188,8 +187,8 @@ class UserController extends BackendController
      */
     public function actionAccount()
     {
-        $param = $this->parseParam();
-        $user_id = $param['user_id'];
+        $param   = $this->parseParam();
+        $user_id = ArrayHelper::getValue($param,'user_id');
         $_return = UserInfoService::getService()->account($user_id);
         if(is_array($_return))
             return JsonHelper::returnSuccess($_return);
@@ -204,7 +203,7 @@ class UserController extends BackendController
     public function actionUserCenter()
     {
         $param = $this->parseParam();
-        $user_id = $param['user_id'];
+        $user_id = ArrayHelper::getValue($param,'user_id');
         $_return = UserinfoService::getService()->userCenter($user_id);
         if(is_array($_return))
             return JsonHelper::returnSuccess($_return);
@@ -220,7 +219,7 @@ class UserController extends BackendController
     public function actionInvitationCode()
     {
         $param = $this->parseParam();
-        $user_id = $param['user_id'];
+        $user_id =ArrayHelper::getValue($param,'user_id');
         $_return = InvitationCodeService::getService()->invitationCode($user_id);
         if(is_array($_return))
             return JsonHelper::returnSuccess($_return);

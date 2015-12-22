@@ -75,7 +75,7 @@ class MobileCode extends \yii\base\Component
             $_param['appkey'] = $this->appkey;
 
         //手机号
-        if( ! \common\helpers\MobileHelper::isMobile($mobile))
+        if( ! \common\helpers\CommonHelper::isMobile($mobile))
             throw new InvalidParamException('Param for mobile error: '.$mobile);
         else
             $_param['phone'] = $mobile;

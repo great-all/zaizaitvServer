@@ -12,7 +12,7 @@ use backend\models\mysql\SensitiveWordModel;
 class SensitiveWordService extends BackendService{
 
     //敏感词类型
-    const DICI_CODE_SENSITIVE = 'SENSITIVE';//敏感词
+    const DICT_CODE_SENSITIVE = 'SENSITIVE';//敏感词
     const DICT_CODE_ALL       = 'ALL';
 
     /**
@@ -33,13 +33,24 @@ class SensitiveWordService extends BackendService{
         return $_sensitive_words;
     }
 
+    /**
+     * 判断是否是某一类类型的敏感词
+     * @param $word
+     * @param $type
+     * @return bool
+     */
     public function isSensitive($word,$type)
     {
         $_words = $this->getSensitiveWord($type);
         return  in_array($word,$_words);
     }
 
-    private function _getWord($type)
+    /**
+     * 获取某一类型的敏感词
+     * @param $type
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    private function _getWord($type = self::DICT_CODE_ALL)
     {
         if($type === self::DICT_CODE_ALL)
             return SensitiveWordModel::find()->asArray()->all();

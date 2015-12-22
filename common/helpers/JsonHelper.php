@@ -7,28 +7,52 @@
  */
 namespace common\helpers;
 use yii\base\InvalidParamException;
+use common\constants\CommonConstant;
 
 class JsonHelper extends \yii\helpers\Json{
 
+    /**
+     * 请求失败返回数据处理
+     *
+     * @param int $code
+     * @return string
+     */
     public static function returnError($code) {
-        $message = static::parseCode($code);
+        //$message = static::parseCode($code);
+        //解析错误状态吗
+        $lang = \yii::$app->lang;
+        $lang->load('error_message');
+        $message = $lang->line($code);
         return static::returnJson($code,NULL,$message);
     }
 
+    /**
+     * 请求成功数据处理
+     *
+     * @param null $data
+     * @return string
+     */
     public static function returnSuccess($data = NULL){
         return static::returnJson(\common\constants\ErrorConstant::SUCCESS,$data);
     }
 
+    /**
+     * 请求返回处理
+     * @param int $code
+     * @param null $data
+     * @param null $desc
+     * @return string
+     */
     public static function returnJson($code,$data = NULL,$desc = NULL){
         if( ! is_int($code))
             throw new InvalidParamException('code not exists!');
 
-        $_return['code'] = $code;
+        $_return[CommonConstant::RETURN_CODE] = $code;
         if( $data !== NULL)
-            $_return['data'] = $data;
+            $_return[CommonConstant::RETURN_DATA] = $data;
 
         if($desc !== NULL)
-            $_return['desc'] = $desc;
+            $_return[CommonConstant::RETURN_DESC] = $desc;
 
         return \yii\helpers\Json::encode($_return);
     }
@@ -53,6 +77,7 @@ class JsonHelper extends \yii\helpers\Json{
      *
      * @param $code
      * @return mixed
+     * @deprecate
      */
     private static function parseCode($code)
     {

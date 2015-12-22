@@ -4,6 +4,7 @@
  */
 namespace backend\services\users;
 
+use backend\events\RegisterEvent;
 use backend\services\BackendService;
 use backend\models\mysql\UserModel;
 use backend\models\mongodb\SignModel;
@@ -95,7 +96,7 @@ class UserService extends BackendService{
             return ErrorConstant::REGISTER_FAIL;
 
         //注册事件
-        $this->OnAfterRegister();
+        $this->OnAfterRegister($_isOk);
         //可以考虑注册成功后调用登陆接口（直接调用登陆服务）
         return true;
 
@@ -108,12 +109,12 @@ class UserService extends BackendService{
      */
     public function checkName($user_name)
     {
-        if( empty($user_name)) return REGISTER_PARAM_ERROE;
+        if( empty($user_name)) return ErrorConstant::R;
         //判断用户是否已经存在
         if(UserModel::findOne(['name' => $user_name]) !== NULL)
             return ErrorConstant::USER_IS_EXISTS;
         //判断用户名是否是敏感词
-        $_isSensivite = \backend\services\SensitiveWordService::getService()->isSensitive($user_name,\backend\services\SensitiveWordService::DICI_CODE_SENSITIVE);
+        $_isSensivite = \backend\services\SensitiveWordService::getService()->isSensitive($user_name,\backend\services\SensitiveWordService::DICT_CODE_SENSITIVE);
         if($_isSensivite === true)
             return ErrorConstant::REGISTER_NAME_SENSITIVE;
 
@@ -128,7 +129,7 @@ class UserService extends BackendService{
      */
     public function checkPass($password)
     {
-        if( empty($password)) return ErrorConstant::REGISTER_PARAM_ERROE;
+        if( empty($password)) return ErrorConstant::R;
         return true;
     }
 
@@ -139,12 +140,12 @@ class UserService extends BackendService{
      */
     public function checkNick($nick_name)
     {
-        if( empty($nick_name)) return ErrorConstant::REGISTER_PARAM_ERROE;
-        //判断用户是否已经存在
+        if( empty($nick_name)) return ErrorConstant::REGISTER_PARAM_ERROR;
+        //判断用户是否已经存在R
         if(UserModel::findOne(['nick_name' => $nick_name]) !== NULL)
             return ErrorConstant::NICK_NAME_IS_EXISTS;
         //判断用户名是否是敏感词
-        $_isSensivite = \backend\services\SensitiveWordService::getService()->isSensitive($nick_name,\backend\services\SensitiveWordService::DICI_CODE_SENSITIVE);
+        $_isSensivite = \backend\services\SensitiveWordService::getService()->isSensitive($nick_name,\backend\services\SensitiveWordService::DICT_CODE_SENSITIVE);
         if($_isSensivite === true)
             return ErrorConstant::REGISTER_NICK_SENSITIVE;
 
@@ -163,32 +164,9 @@ class UserService extends BackendService{
             return ErrorConstant::USER_MOBILE_IS_EXISTS;
 
         //判断手机号格式是否正确
-        if( empty($mobile) || \common\helpers\MobileHelper::isMobile($mobile) === false) return ErrorConstant::REGISTER_PARAM_ERROE;
+        if( empty($mobile) || \common\helpers\CommonHelper::isMobile($mobile) === false) return ErrorConstant::MOBILE_FORMAT_ERROR;
 
         return true;
-    }
-
-    /**
-     * 用户签到
-     * @param int $user_id
-     * @return bool|int
-     */
-    public function sign($user_id)
-    {
-        //检查用户当天是否已经签到
-        $_sign = SignModel::findOne(['create_time' => ['$gte'=>\common\helpers\DateHelper::startDate(),'$lte' => \common\helpers\DateHelper::endDate()],]);
-        if($_sign !== null)
-            return ErrorConstant::USER_IS_SIGNED;
-
-        //签到
-        $_sign = new SignModel();
-        $_sign->user_id = $user_id;
-        if($_sign->insert())
-        {
-            $this->OnAfterSign();
-            return true;
-        }
-        return ErrorConstant::USER_SIGN_FAILED;
     }
 
     /**
@@ -318,9 +296,11 @@ class UserService extends BackendService{
     /**
      * 用户注册事件
      */
-    private function OnAfterRegister()
+    private function OnAfterRegister($user_id)
     {
-        $this->trigger(static::AFTER_REGISTER_EVENT);
+        $registerEvent = new RegisterEvent();
+        $registerEvent->userId = $user_id;
+        $this->trigger(static::AFTER_REGISTER_EVENT,$registerEvent);
     }
 
     /**

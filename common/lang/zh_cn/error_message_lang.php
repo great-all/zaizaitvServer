@@ -16,7 +16,7 @@ return [
     ErrorConstant::USER_IS_LOCKED       => '用户被锁',
 
     //注册
-    ErrorConstant::REGISTER_PARAM_ERROE => '参数错误',
+    ErrorConstant::REGISTER_PARAM_ERROR => '参数错误',
     ErrorConstant::USER_IS_EXISTS       => '该用户名以注册',
     ErrorConstant::REGISTER_NAME_SENSITIVE => '用户名中有敏感词',
     ErrorConstant::REGISTER_NICK_SENSITIVE => '昵称中有敏感词',
@@ -50,4 +50,14 @@ return [
 
     //invitation code
     ErrorConstant::CREATE_INVITATION_CODE_FAILED => '验证码生成失败',
+
+    //friend module
+    ErrorConstant::PARAM_ERROR             => '参数错误',
+    ErrorConstant::FRIEND_IN_HAND          => '等待好友处理中',
+    ErrorConstant::IS_FRIEND               => '已经是好友了',
+    ErrorConstant::ADD_FRIEND_FAILED       => '添加好友失败！',
+    ErrorConstant::NOT_INVITATION          => '没有好友请求',
+    ErrorConstant::AGREE_FRIEND_FAILED     => '同意好友请求失败',
+    ErrorConstant::DISAGREE_FRIEND_FAILED  => '拒绝好友请求失败',
+    ErrorConstant::FRIEND_NOT_EXISTS       => '好友不存在',
 ];
