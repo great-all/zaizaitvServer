@@ -120,7 +120,6 @@ class Query extends Component implements QueryInterface
             $db = Yii::$app->getDb();
         }
         list ($sql, $params) = $db->getQueryBuilder()->build($this);
-
         return $db->createCommand($sql, $params);
     }
 

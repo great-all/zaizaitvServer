@@ -7,25 +7,33 @@
  */
 namespace backend\models\mongodb;
 
-class SignModel extends \backend\models\mongodb\ActiveRecord
+class PraiseCommentModel extends \backend\models\mongodb\ActiveRecord
 {
-    const SIGN_STATUS_OK = 1;
-    const SIGN_STATUS_DELETED = 0;
+    const COMMENT_STATUS_OK = 0;
+    const COMMENT_STATUS_LOCKED = 1;
+
     public static function collectionName()
     {
-        return 'user_sign';
+        return 'praise_comment';
     }
 
     public function attributes()
     {
-        return ['_id','user_id','status','create_time'];
+        return ['_id','target_resource_type','target_resource_id','user_id','status','create_time'];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['_id','user_id','status','create_time']
+            self::SCENARIO_DEFAULT => ['_id','target_resource_type','target_resource_id','user_id','status','create_time']
             ];
+    }
+
+    public function beforeSave($insert)
+    {
+        //重载部分
+        $this->_beforeSave($insert);
+       return parent::beforeSave($insert);
     }
 
     /**
@@ -39,7 +47,7 @@ class SignModel extends \backend\models\mongodb\ActiveRecord
         if($insert === true)
         {
             $this->setAttribute('create_time',\common\helpers\DateHelper::now());
-            $this->setAttribute('status',self::SIGN_STATUS_OK);
+            $this->setAttribute('status',self::COMMENT_STATUS_OK);
         }
     }
 
