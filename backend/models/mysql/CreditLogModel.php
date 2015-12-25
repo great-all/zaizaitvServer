@@ -32,8 +32,7 @@ class CreditLogModel extends BackendModel
     }
 
     /**
-     * 添加用户
-     * @param array $user
+     * @param array $credit
      * @return bool|mixed
      * @throws \Exception
      */

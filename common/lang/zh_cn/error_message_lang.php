@@ -60,4 +60,11 @@ return [
     ErrorConstant::AGREE_FRIEND_FAILED     => '同意好友请求失败',
     ErrorConstant::DISAGREE_FRIEND_FAILED  => '拒绝好友请求失败',
     ErrorConstant::FRIEND_NOT_EXISTS       => '好友不存在',
+
+    //credits
+    ErrorConstant::ADD_CREDIT_FAILED       => '添加积分失败',
+    ErrorConstant::UPDATE_CREDIT_FAILED    => '跟新积分失败',
+
+    //actor
+    ErrorConstant::ACTOR_NOT_EXISTS       => '该演员演员不存在',
 ];

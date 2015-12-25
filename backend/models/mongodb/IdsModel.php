@@ -7,24 +7,25 @@
  */
 namespace backend\models\mongodb;
 
-class SignModel extends \backend\models\mongodb\ActiveRecord
+class IdsModel extends \yii\mongodb\ActiveRecord
 {
-    const SIGN_STATUS_OK = 1;
-    const SIGN_STATUS_DELETED = 0;
+    const IDS_STATUS_OK = 1;
+    const IDS_STATUS_DEL = 0;
+
     public static function collectionName()
     {
-        return 'user_sign';
+        return 'ids';
     }
 
     public function attributes()
     {
-        return ['_id','user_id','status','create_time'];
+        ['_id','table_name','id','status','create_time'];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['_id','user_id','status','create_time']
+            self::SCENARIO_DEFAULT => ['_id','table_name','id','status','create_time']
             ];
     }
 
@@ -39,7 +40,7 @@ class SignModel extends \backend\models\mongodb\ActiveRecord
         if($insert === true)
         {
             $this->setAttribute('create_time',\common\helpers\DateHelper::now());
-            $this->setAttribute('status',self::SIGN_STATUS_OK);
+            $this->setAttribute('act_status',self::IDS_STATUS_OK);
         }
     }
 

@@ -72,4 +72,9 @@ class ErrorConstant
     const CREDIT_BASE = -800;
     const ADD_CREDIT_FAILED = self::CREDIT_BASE - 1;//添加积分失败
     const UPDATE_CREDIT_FAILED = self::CREDIT_BASE - 2;//跟新积分
+
+    //actor
+    const ACTOR_BASE = -900;
+    const ACTOR_NOT_EXISTS = self::ACTOR_BASE - 1;//演员不存在
+    const ACTOR_COMMENT_FAILED = self::ACTOR_BASE - 2;//评论失败
 }
