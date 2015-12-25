@@ -4,7 +4,6 @@
  */
 namespace backend\controllers;
 use backend\services\users\FriendService;
-use common\helpers\JsonHelper;
 use \yii\helpers\ArrayHelper;
 
 /**
@@ -13,22 +12,8 @@ use \yii\helpers\ArrayHelper;
  * @author zhangchao
  * @since	Version 1.0.0
  */
-class FriendController extends BackendController
+class FriendController extends BaseController
 {
-    /**
-     * @return array
-     *
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => \backend\filters\TokenFilter::className(),
-                'only' => ['sign', 'changePassword','userCenter','account'],
-            ],
-        ];
-    }
-
     /**
      * 默认控制器（待用）
      * @return string
@@ -50,9 +35,9 @@ class FriendController extends BackendController
         $page_count = ArrayHelper::getValue($param,'page_count',10);
         $_return = FriendService::getService()->friendList($user_id,$page_index,$page_count);
         if(is_array($_return))
-            return JsonHelper::returnSuccess(['friends_list'=>$_return]);
+            return $this->returnSuccess(['friends_list'=>$_return]);
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -66,9 +51,9 @@ class FriendController extends BackendController
         $friend_id  = ArrayHelper::getValue($param,'friend_id');
         $_return = FriendService::getService()->launchFriend($user_id, $friend_id);
         if($_return === true)
-            return JsonHelper::returnSuccess();
+            return $this->returnSuccess();
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -82,9 +67,9 @@ class FriendController extends BackendController
         $friend_id  = ArrayHelper::getValue($param,'friend_id');
         $_return = FriendService::getService()->handleFriend($user_id, $friend_id);
         if($_return === true)
-            return JsonHelper::returnSuccess();
+            return $this->returnSuccess();
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -98,9 +83,9 @@ class FriendController extends BackendController
         $friend_id  = ArrayHelper::getValue($param,'friend_id');
         $_return = FriendService::getService()->handleFriend($user_id, $friend_id,false);
         if($_return === true)
-            return JsonHelper::returnSuccess();
+            return $this->returnSuccess();
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -114,8 +99,8 @@ class FriendController extends BackendController
         $friend_id  = ArrayHelper::getValue($param,'friend_id');
         $_return = FriendService::getService()->releaseFriend($user_id, $friend_id);
         if($_return === true)
-            return JsonHelper::returnSuccess();
+            return $this->returnSuccess();
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 }

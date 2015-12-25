@@ -4,7 +4,6 @@
  */
 namespace backend\controllers;
 use backend\services\films\FilmService;
-use common\helpers\JsonHelper;
 use \yii\helpers\ArrayHelper;
 
 /**
@@ -13,22 +12,8 @@ use \yii\helpers\ArrayHelper;
  * @author zhangchao
  * @since	Version 1.0.0
  */
-class FilmController extends BackendController
+class FilmController extends BaseController
 {
-    /**
-     * @return array
-     *
-     */
-//    public function behaviors()
-//    {
-//        return [
-//            [
-//                'class' => \backend\filters\TokenFilter::className(),
-//                'only' => ['sign', 'changePassword','userCenter','account'],
-//            ],
-//        ];
-//    }
-
     /**
      * 默认控制器（待用）
      * @return string
@@ -49,8 +34,8 @@ class FilmController extends BackendController
         $page_count  = ArrayHelper::getValue($param,'page_count');
         $_return = FilmService::getService()->videoList($page_index,$page_count);
         if(is_array($_return))
-            return JsonHelper::returnSuccess($_return);
+            return $this->returnSuccess($_return);
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 }

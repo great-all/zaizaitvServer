@@ -4,7 +4,6 @@
  */
 namespace backend\controllers;
 use backend\services\actors\ActorService;
-use common\helpers\JsonHelper;
 use \yii\helpers\ArrayHelper;
 
 /**
@@ -13,21 +12,8 @@ use \yii\helpers\ArrayHelper;
  * @author zhangchao
  * @since	Version 1.0.0
  */
-class ActorController extends BackendController
+class ActorController extends BaseController
 {
-    /**
-     * @return array
-     *
-     */
-//    public function behaviors()
-//    {
-//        return [
-//            [
-//                'class' => \backend\filters\TokenFilter::className(),
-//                'only' => ['sign', 'changePassword','userCenter','account'],
-//            ],
-//        ];
-//    }
 
     /**
      * 默认控制器（待用）
@@ -50,9 +36,9 @@ class ActorController extends BackendController
         $company     = ArrayHelper::getValue($param,'company');
         $_return = ActorService::getService()->actorList($page_index,$page_count,$company);
         if(is_array($_return))
-            return JsonHelper::returnSuccess($_return);
+            return $this->returnSuccess($_return);
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -67,9 +53,9 @@ class ActorController extends BackendController
         $count       = ArrayHelper::getValue($param,'count');
         $_return = ActorService::getService()->actorDetail($actor_id,$page_index,$count);
         if(is_array($_return))
-            return JsonHelper::returnSuccess($_return);
+            return $this->returnSuccess($_return);
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -84,9 +70,9 @@ class ActorController extends BackendController
         $count       = ArrayHelper::getValue($param,'count');
         $_return = ActorService::getService()->commentList($actor_id,$page_index,$count);
         if(is_array($_return))
-            return JsonHelper::returnSuccess($_return);
+            return $this->returnSuccess($_return);
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 
     /**
@@ -103,8 +89,8 @@ class ActorController extends BackendController
         $target_user     = ArrayHelper::getValue($param,'target_user');
         $_return = ActorService::getService()->comment($actor_id,$user_id,$content,$target_id,$target_user);
         if($_return === true)
-            return JsonHelper::returnSuccess();
+            return $this->returnSuccess();
 
-        return JsonHelper::returnError($_return);
+        return $this->returnError($_return);
     }
 }

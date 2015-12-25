@@ -22,23 +22,11 @@ class BaseController extends \yii\rest\Controller{
     }
 
     /**
-     * 签名认证
+     * 参数签名认证
      */
     protected function checkSign()
     {
 
-    }
-
-    /**
-     * 解析token
-     * @return bool|int
-     */
-    protected function parseToken()
-    {
-        $token = \yii::$app->request->post_get(CommonConstant::TOKEN_NAME);
-        if($token === NULL)
-            return false;
-        return $user_id = 2;
     }
 
     /**
@@ -48,8 +36,6 @@ class BaseController extends \yii\rest\Controller{
      * @return string
      */
     protected function returnError($code) {
-        //$message = static::parseCode($code);
-        //解析错误状态吗
         $lang = \yii::$app->lang;
         $lang->load('error_message');
         $message = $lang->line($code);
@@ -84,6 +70,6 @@ class BaseController extends \yii\rest\Controller{
         if($desc !== NULL)
             $_return[CommonConstant::RETURN_DESC] = $desc;
 
-        return \yii\helpers\Json::encode($_return);
+        return $_return;
     }
 }
