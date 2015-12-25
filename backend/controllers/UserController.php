@@ -3,12 +3,12 @@
  * @category 北京阿克米有限公司
  */
 namespace backend\controllers;
-use backend\services\users\InvitationCodeService;
+use backend\services\users\SignService;
 use backend\services\users\UserService;
 use backend\services\users\UserInfoService;
-use backend\services\users\SignService;
+use backend\services\users\InvitationCodeService;
+use yii\helpers\ArrayHelper;
 use common\helpers\JsonHelper;
-use \yii\helpers\ArrayHelper;
 
 /**
  * Class UserController
@@ -18,10 +18,11 @@ use \yii\helpers\ArrayHelper;
  */
 class UserController extends BackendController
 {
+
     /**
-     * @return array
-     *
-     */
+    * @return array
+    *
+    */
     public function behaviors()
     {
 //        return ArrayHelper::merge(parent::behaviors(),[
@@ -33,7 +34,8 @@ class UserController extends BackendController
         return [];
     }
 
-    /**
+
+/**
      * 默认控制器（待用）
      * @return string
      */
